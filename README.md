@@ -2,12 +2,12 @@
 
 ## Project Description:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Recently, I've started shopping for my first car. One issue that I've noticed is the incredible amount of reviews, ratings, scores, and other metrics for every car I consider. Every site has different ratings and thoughts on each vehicle, and it becomes a task in and of itself to track all thoughts on cars you are considering. My project automates this process by scraping a range of sites to compare opinions on cars the user is interested in. *Car and Driver*, Edmunds, J.D. Power, Kelley Blue Book, *MotorTrend*, and *U.S. News & World Report* are scraped for their opinions on each car. Reliability ratings from CarEdge, Consumer Reports, and J.D. Power are also included, along with safety information from IIHS.
+&nbsp;&nbsp;&nbsp;&nbsp;Recently, I've started shopping for my first car. One issue that I've noticed is the incredible amount of reviews, ratings, scores, and other metrics for every car I consider. Every site has different ratings and thoughts on each vehicle, and it becomes a task in and of itself to track all thoughts on cars you are considering. My project automates this process by scraping a range of sites to compare opinions on cars the user is interested in. *Car and Driver*, Edmunds, J.D. Power, Kelley Blue Book, *MotorTrend*, and *U.S. News & World Report* are scraped for their opinions on each car. Reliability ratings from CarEdge, Consumer Reports, and J.D. Power are also included, along with safety information from IIHS.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To accomplish this, the program prompts users for cars by their make, model, and year. The program then scrapes each site for information regarding the vehicle and properly stores the information. When the user is finished entering vehicles, CSVs are generated to help users compare reviews across sites. More detailed information from each review is stored in a site-specific CSV.
+&nbsp;&nbsp;&nbsp;&nbsp;To accomplish this, the program prompts users for cars by their make, model, and year. The program then scrapes each site for information regarding the vehicle and properly stores the information. When the user is finished entering vehicles, CSVs are generated to help users compare reviews across sites. More detailed information from each review is stored in a site-specific CSV.
 
 ## Instructions:
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run `py scraper/scraper.py` from the root project to run the program. Enter the make, model, and year of each vehicle you would like to compare. Visit the `data` directory to find your CSV files once the program concludes.
+&nbsp;&nbsp;&nbsp;&nbsp;Run `py scraper/scraper.py` from the root project to run the program. Enter the make, model, and year of each vehicle you would like to compare. Visit the `data` directory to find your CSV files once the program concludes.
 
 ## Packages:
 - [beautifulsoup4 v4.11.1](https://pypi.org/project/beautifulsoup4/) 
