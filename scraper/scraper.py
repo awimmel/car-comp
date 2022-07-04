@@ -7,16 +7,11 @@ from carDriver import CarDriver
 from motortrend import MotorTrend
 from carEdge import CarEdge
 from usNews import USNews
-from enum import Enum
+from car import Car
+from car import Site
 import csv
 
-class Site(Enum):
-    CAR_DRIVER = 1
-    EDMUNDS = 2
-    JDP = 3
-    KBB = 4
-    MOTORTREND = 5
-    US_NEWS = 6
+
 
 def readAndAct():
     choice = ""
@@ -31,28 +26,19 @@ def readAndAct():
         kbb = KBB(make, model, year)
         motortrend = MotorTrend(make, model, year)
         usNews = USNews(make, model, year)
-        currentCar = {
-            "make": make,
-            "model": model,
-            "year": year,
-            Site.CAR_DRIVER: carAndDriver,
-            Site.EDMUNDS: edmunds,
-            Site.JDP: jdp,
-            Site.KBB: kbb,
-            Site.MOTORTREND: motortrend,
-            Site.US_NEWS: usNews
-        }
+        currentCar = Car(make, model, year, carAndDriver, edmunds, jdp, kbb, motortrend, usNews)
         scrapePages(currentCar)
         cars.append(currentCar)
 
         choice = input("Enter x to quit and generate CSVs. Enter any other key to continue: ")
+    
+    
     genCSV(cars)
     
 
 def scrapePages(car):
-    for site in car:
-        if site not in ["make", "model", "year"]:
-            car[site].readPage()
+    for site in car.sites:
+        car.sites[site].readPage()
     
 def genCSV(cars):
     carEdge = CarEdge()
@@ -66,20 +52,20 @@ def genCSV(cars):
             "JDPower Relaibility (Probs./100 vehicles)", "CR Reliability Score", "CR Reliability Rank", "5-Year Depreciation", "IIHS Designation", "IIHS Addit'l Info"]
         writer.writerow(header)
         for car in cars:
-            currentIIHS = iihs.findDep(car["make"], car["model"], car["year"])
+            currentIIHS = iihs.findDep(car.make, car.model, car.year)
             if currentIIHS == "N/A":
                 currentIIHS = {
                     "selection": "N/A",
                     "details": "N/A"
                 }
-            currentRow = [car["make"], car["model"], car["year"], car[Site.MOTORTREND].price["msrp"],
-                car[Site.MOTORTREND].price["fairPrice"],car[Site.MOTORTREND].price["version"],
-                car[Site.JDP].spec["mpgCity"], car[Site.JDP].spec["mpgHwy"], car[Site.JDP].spec["horsepower"],
-                car[Site.JDP].spec["transmission"], car[Site.JDP].spec["engine"], car[Site.JDP].spec["drivetrain"],
-                car[Site.CAR_DRIVER].overallScore, car[Site.EDMUNDS].overallScore, car[Site.EDMUNDS].consumScore,
-                car[Site.JDP].overall, car[Site.JDP].rank, car[Site.KBB].expertScore, car[Site.KBB].userScore,
-                car[Site.MOTORTREND].score, car[Site.MOTORTREND].ranking, car[Site.US_NEWS].overall, car[Site.JDP].reliability,
-                cr.reliability(car["make"])["score"], cr.reliability(car["make"])["ranking"], carEdge.findDep(car["make"]), currentIIHS["selection"], currentIIHS["details"]]
+            currentRow = [car.make, car.model, car.year, car.sites[Site.MOTORTREND].price["msrp"],
+                car.sites[Site.MOTORTREND].price["fairPrice"],car.sites[Site.MOTORTREND].price["version"],
+                car.sites[Site.JDP].spec["mpgCity"], car.sites[Site.JDP].spec["mpgHwy"], car.sites[Site.JDP].spec["horsepower"],
+                car.sites[Site.JDP].spec["transmission"], car.sites[Site.JDP].spec["engine"], car.sites[Site.JDP].spec["drivetrain"],
+                car.sites[Site.CAR_DRIVER].overallScore, car.sites[Site.EDMUNDS].overallScore, car.sites[Site.EDMUNDS].consumScore,
+                car.sites[Site.JDP].overall, car.sites[Site.JDP].rank, car.sites[Site.KBB].expertScore, car.sites[Site.KBB].userScore,
+                car.sites[Site.MOTORTREND].score, car.sites[Site.MOTORTREND].ranking, car.sites[Site.US_NEWS].overall, car.sites[Site.JDP].reliability,
+                cr.reliability(car.make)["score"], cr.reliability(car.make)["ranking"], carEdge.findDep(car.make), currentIIHS["selection"], currentIIHS["details"]]
             writer.writerow(currentRow)
     CarDriver.genCSV()
     Edmunds.genCSV()
