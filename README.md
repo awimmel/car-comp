@@ -12,8 +12,10 @@ To accomplish this, the program prompts users for cars by their make, model, and
 - [re v2.2.1](https://docs.python.org/3/library/re.html)
 - [requests v2.27.1](https://pypi.org/project/requests/)
 
+## Recent Updates:
+- Extra newlines in CSV files have been removed
+
 ## Things to improve:
-- There are currently extra lines placed between information when CSV files are generated. This should be fixed so that only the information is written to the files, not any blank lines.
 - It would be much better if the cars that were created in `scraper.py` were formal objects. This would help the program to better follow Object-Oriented principles
 - More graceful exits when the program runs into scraping issues is a much-needed fix
 - I ran into significant issues trying to scrape the pros and cons from *MotorTrend* reviews. I couldn't find a solution initially, but it's worth taking a deeper dive so that information can be extracted in the future.

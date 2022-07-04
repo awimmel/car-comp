@@ -49,7 +49,7 @@ class MotorTrend:
         MotorTrend.cars.append(self)
     
     def genCSV():
-        with open('data/motortrend.csv', 'w', encoding="UTF8") as file:
+        with open('data/motortrend.csv', 'w', newline="", encoding="UTF8") as file:
             writer = csv.writer(file)
             header = ["Make", "Model", "Year", "Overall Score", "Performance Score", "Efficiency Score",
             "Technology Score", "Value Score", "Ranking", "MSRP", "Fair Price", "Model Version for Prices"]

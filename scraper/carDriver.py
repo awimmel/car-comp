@@ -37,7 +37,7 @@ class CarDriver:
         CarDriver.cars.append(self)
     
     def genCSV():
-        with open('data/carDriver.csv', 'w', encoding="UTF8") as file:
+        with open('data/carDriver.csv', 'w', newline="", encoding="UTF8") as file:
             writer = csv.writer(file)
             header = ["Make", "Model", "Year", "Overall Score", "Pros", "Cons", "Overall Eval.", "Rank"]
             writer.writerow(header)

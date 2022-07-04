@@ -51,7 +51,7 @@ class USNews:
         USNews.cars.append(self)
 
     def genCSV():
-        with open('data/usNews.csv', 'w', encoding="UTF8") as file:
+        with open('data/usNews.csv', 'w', newline="", encoding="UTF8") as file:
             writer = csv.writer(file)
             header = ["Make", "Model", "Year", "Overall Score", "Critics Score", "Performance Score", "Interior Score",
             "Safety Score", "Quality Score", "Pros", "Cons"]

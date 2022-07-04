@@ -58,7 +58,7 @@ def genCSV(cars):
     carEdge = CarEdge()
     cr = ConsRep()
     iihs = IIHS()
-    with open('data/main.csv', 'w', encoding="UTF8") as file:
+    with open('data/main.csv', 'w', newline="", encoding="UTF8") as file:
         writer = csv.writer(file)
         header = ["Make", "Model", "Year", "MSRP", "Fair Price", "Priced Version", "MPG (City)", "MPG (Hwy)",
             "Horsepower", "Transmission", "Engine", "Drivetrain", "Car and Driver Review", "Edmunds Critic", "Edmunds User",

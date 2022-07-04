@@ -45,7 +45,7 @@ class KBB:
         KBB.cars.append(self)
 
     def genCSV():
-        with open('data/kbb.csv', 'w', encoding="UTF8") as file:
+        with open('data/kbb.csv', 'w', newline="", encoding="UTF8") as file:
             writer = csv.writer(file)
             header = ["Make", "Model", "Year", "Critic Score", "User Score", "Pros", "Cons", "New Features"]
             writer.writerow(header)

@@ -56,7 +56,7 @@ class Edmunds:
 
         
     def genCSV():
-        with open('data/edmunds.csv', 'w', encoding="UTF8") as file:
+        with open('data/edmunds.csv', 'w',  newline="", encoding="UTF8") as file:
             writer = csv.writer(file)
             header = ["Make", "Model", "Year", "Overall Score", "Consumer Score", "Performance Rating",
                 "Comfort Rating", "Interior Rating", "Technology Rating", "Storage Rating", "Fuel Rating",

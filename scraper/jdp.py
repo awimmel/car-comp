@@ -118,7 +118,7 @@ class JDPower:
         JDPower.cars.append(self)
 
     def genCSV():
-        with open('data/jdp.csv', 'w', encoding="UTF8") as file:
+        with open('data/jdp.csv', 'w',  newline="", encoding="UTF8") as file:
             writer = csv.writer(file)
             header = ["Make", "Model", "Year", "Overall Score", "Quality and Reliability",
                 "Driving Experience", "Resale", "Dealership Experience", "Rank", "Pros", "Cons", "Reliability (Probs./100 vehicles)",
