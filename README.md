@@ -7,11 +7,10 @@ Recently, I've started shopping for my first car. One issue that I've noticed is
 To accomplish this, the program prompts users for cars by their make, model, and year. The program then scrapes each site for information regarding the vehicle and properly stores the information. When the user is finished entering vehicles, CSVs are generated to help users compare reviews across sites. More detailed information from each review is stored in a site-specific CSV.
 
 ## Packages:
-- BeautifulSoup
-- csv
-- enum
-- re
-- requests
+- [beautifulsoup4 v4.11.1](https://pypi.org/project/beautifulsoup4/) 
+- [csv v1.0](https://docs.python.org/3/library/csv.html)
+- [re v2.2.1](https://docs.python.org/3/library/re.html)
+- [requests v2.27.1](https://pypi.org/project/requests/)
 
 ## Things to improve:
 - There are currently extra lines placed between information when CSV files are generated. This should be fixed so that only the information is written to the files, not any blank lines.
