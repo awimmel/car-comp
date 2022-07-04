@@ -55,7 +55,7 @@ class JDPower:
             self.reliability = "N/A"
         page = requests.get(f"https://www.jdpower.com/cars/{year}/{make}/{correctModel}")
         self.soup = BeautifulSoup(page.content, "html.parser")
-        self.overall = 0
+        self.overall = -1
         self.detScores = {
             "qualRel": "N/A",
             "drivExp": "N/A",
@@ -64,8 +64,8 @@ class JDPower:
         }
         self.rank = 0
         self.detRemarks = {
-            "pros": [],
-            "cons": []
+            "pros": ["N/A"],
+            "cons": ["N/A"]
         }
         self.spec = {
             "mpgCity": "N/A",
@@ -77,45 +77,49 @@ class JDPower:
         }
     
     def readPage(self):
-        overallResult = self.soup.find("div", class_="radialBar_small-rating-value__Xl32u jss14 jss11")
-        if overallResult is not None:
-            self.overall = float(overallResult.contents[0])
+        try:
+            overallResult = self.soup.find("div", class_="radialBar_small-rating-value__Xl32u jss14 jss11")
+            if overallResult is not None:
+                self.overall = float(overallResult.contents[0])
+                
+                detResult = self.soup.find_all("span", class_="bh-m")
+                self.detScores["qualRel"] = int(detResult[1].contents[0])
+                self.detScores["drivExp"] = int(detResult[2].contents[0])
+                self.detScores["resale"] = int(detResult[3].contents[0])
+                self.detScores["dealer"] = int(detResult[4].contents[0])
+                
+                rankNumbResult = self.soup.find_all("div", class_="ranking-row-left bh-m")
+                properResult = ""
+                for result in rankNumbResult:
+                    if result.contents[0].startswith("#"):
+                        properResult = result.contents[0]
+                        break
+                self.rank =int(re.split("#|\W", properResult)[1])
+                
+                prosConsResult = self.soup.find_all("ul", class_="discription-list jss39")
+                currentList = "pros"
+                for list in prosConsResult:
+                    entries = list.find_all("li")
+                    self.detRemarks[currentList] = []
+                    for entry in entries:
+                        self.detRemarks[currentList].append(entry.contents[1])
+                    currentList = "cons"
+            else:
+                self.overall = "Not Rated"
             
-            detResult = self.soup.find_all("span", class_="bh-m")
-            self.detScores["qualRel"] = int(detResult[1].contents[0])
-            self.detScores["drivExp"] = int(detResult[2].contents[0])
-            self.detScores["resale"] = int(detResult[3].contents[0])
-            self.detScores["dealer"] = int(detResult[4].contents[0])
-            
-            rankNumbResult = self.soup.find_all("div", class_="ranking-row-left bh-m")
-            properResult = ""
-            for result in rankNumbResult:
-                if result.contents[0].startswith("#"):
-                    properResult = result.contents[0]
-                    break
-            self.rank =int(re.split("#|\W", properResult)[1])
-            
-            prosConsResult = self.soup.find_all("ul", class_="discription-list jss39")
-            currentList = "pros"
-            for list in prosConsResult:
-                entries = list.find_all("li")
-                for entry in entries:
-                    self.detRemarks[currentList].append(entry.contents[1])
-                currentList = "cons"
-        else:
-            self.overall = "Not Rated"
-        
-        perfCont = self.soup.find("div", class_="performanceSpecs_performance-specs-wrapper__30SE9")
-        specResult = perfCont.find_all("div", class_="spacing-s") 
-        for spec in specResult:
-            brokenKey = spec.find("h3").contents[0].split()
-            brokenKey[0] = brokenKey[0].lower()
-            key = brokenKey[0]
-            if len(brokenKey) > 1:
-                key = brokenKey[0] + brokenKey[1]            
-            value = spec.find("p", class_="bh-m spec_spec-body__1xMB0").contents[0]
-            self.spec[key] = value
-        JDPower.cars.append(self)
+            perfCont = self.soup.find("div", class_="performanceSpecs_performance-specs-wrapper__30SE9")
+            specResult = perfCont.find_all("div", class_="spacing-s") 
+            for spec in specResult:
+                brokenKey = spec.find("h3").contents[0].split()
+                brokenKey[0] = brokenKey[0].lower()
+                key = brokenKey[0]
+                if len(brokenKey) > 1:
+                    key = brokenKey[0] + brokenKey[1]            
+                value = spec.find("p", class_="bh-m spec_spec-body__1xMB0").contents[0]
+                self.spec[key] = value
+            JDPower.cars.append(self)
+        except AttributeError:
+            print("Error reading J.D. Power. Please enter a different make, model, or year.")
 
     def genCSV():
         with open('data/jdp.csv', 'w',  newline="", encoding="UTF8") as file:

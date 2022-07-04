@@ -20,35 +20,40 @@ class USNews:
         }
         page = requests.get(f"https://cars.usnews.com/cars-trucks/{make}/{correctModel}/{year}", headers=userAgent)
         self.soup = BeautifulSoup(page.content, "html.parser")
-        self.overall = 0
+        self.overall = -1
         self.comments = {
-            "pros": [],
-            "cons": []
+            "pros": ["N/A"],
+            "cons": ["N/A"]
         }
-        self.critics = 0
-        self.perf = 0
-        self.int = 0
-        self.safety = 0
-        self.qual = 0
+        self.critics = -1
+        self.perf = -1
+        self.int = -1
+        self.safety = -1
+        self.qual = -1
 
     def readPage(self):
-        overallResult = self.soup.find("p", class_="scorecard__score")
-        self.overall = float(overallResult.contents[0])
+        try:
+            overallResult = self.soup.find("p", class_="scorecard__score")
+            self.overall = float(overallResult.contents[0])
 
-        prosRes = self.soup.find("div", class_="pros").find_all("li")
-        for pro in prosRes:
-            self.comments["pros"].append(pro.contents[0])
-        consRes = self.soup.find("div", class_="cons").find_all("li")
-        for con in consRes:
-            self.comments["cons"].append(con.contents[0])
-        
+            prosRes = self.soup.find("div", class_="pros").find_all("li")
+            self.comments["pros"] = []
+            for pro in prosRes:
+                self.comments["pros"].append(pro.contents[0])
+            consRes = self.soup.find("div", class_="cons").find_all("li")
+            self.comments["cons"] = []
+            for con in consRes:
+                self.comments["cons"].append(con.contents[0])
+            
 
-        subscoreRes = self.soup.find_all("td", class_="float-right item scorecard__value-label")
-        self.critics = float(subscoreRes[0].contents[1])
-        self.perf = float(subscoreRes[1].contents[1])
-        self.int = float(subscoreRes[2].contents[1])
-        self.safety = float(subscoreRes[3].contents[1])
-        USNews.cars.append(self)
+            subscoreRes = self.soup.find_all("td", class_="float-right item scorecard__value-label")
+            self.critics = float(subscoreRes[0].contents[1])
+            self.perf = float(subscoreRes[1].contents[1])
+            self.int = float(subscoreRes[2].contents[1])
+            self.safety = float(subscoreRes[3].contents[1])
+            USNews.cars.append(self)
+        except AttributeError:
+            print("Error reading U.S. News & World Report. Please enter a different make, model, or year.")
 
     def genCSV():
         with open('data/usNews.csv', 'w', newline="", encoding="UTF8") as file:

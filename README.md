@@ -14,8 +14,10 @@ To accomplish this, the program prompts users for cars by their make, model, and
 
 ## Recent Updates:
 - Extra newlines in CSV files have been removed
+- Car moved to an actual class instead of being a random, informal object within `scraper.py`
+- Program handles errors while reading sites much better now
 
 ## Things to improve:
-- It would be much better if the cars that were created in `scraper.py` were formal objects. This would help the program to better follow Object-Oriented principles
-- More graceful exits when the program runs into scraping issues is a much-needed fix
 - I ran into significant issues trying to scrape the pros and cons from *MotorTrend* reviews. I couldn't find a solution initially, but it's worth taking a deeper dive so that information can be extracted in the future.
+- It would be better if the users had a way to interact with the program other than the terminal. A simple UI would do a great deal in helping the program to be easier for some to use
+- The program's speed would (hopefully) increase if all scraping was done in parallel rather than one at a time between user entries. I'm not entirely sure if parallel operations like this are possible with Python, but it is definitely worth investigating.

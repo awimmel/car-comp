@@ -22,4 +22,7 @@ class ConsRep:
         if make in self.relValues:
             return self.relValues[make]
         else:
-            return  "N/A"
+            return {
+                "ranking": "N/A",
+                "score": "N/A"
+            }

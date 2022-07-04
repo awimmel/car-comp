@@ -31,4 +31,7 @@ class IIHS:
         if car in self.iihsPicks:
             return self.iihsPicks[car]
         else:
-            return  "N/A"
+            return  {
+                "selection": "N/A",
+                "details": "N/A"
+            }

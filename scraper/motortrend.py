@@ -17,37 +17,40 @@ class MotorTrend:
 
         page = requests.get(f"https://www.motortrend.com/cars/{make}/{correctModel}/{year}/")
         self.soup = BeautifulSoup(page.content, "html.parser")
-        self.score = 0
-        self.ranking = 0
+        self.score = -1
+        self.ranking = -1
         self.price = {
-            "version": "",
-            "msrp": "",
-            "fairPrice": ""
+            "version": "N/A",
+            "msrp": "N/A",
+            "fairPrice": "N/A"
         }
-        self.perf = 0
-        self.eff = 0
-        self.tech = 0
-        self.value = 0
+        self.perf = -1
+        self.eff = -1
+        self.tech = -1
+        self.value = -1
     
     def readPage(self):
-        scoreResult = self.soup.find("span", class_="_2bK3N")
-        self.score = float(re.sub(r"/10", "", scoreResult.contents[0]))
+        try:
+            scoreResult = self.soup.find("span", class_="_2bK3N")
+            self.score = float(re.sub(r"/10", "", scoreResult.contents[0]))
 
-        rankingResult = self.soup.find("div", class_="_616_M")
-        self.ranking = int(re.split("#|\W",rankingResult.contents[0])[1])
+            rankingResult = self.soup.find("div", class_="_616_M")
+            self.ranking = int(re.split("#|\W",rankingResult.contents[0])[1])
 
-        trimRes = self.soup.find("div", class_="_2spOl")
-        self.price["version"] = trimRes.contents[0]
-        self.price["msrp"] = self.soup.find("table", class_="HgJzJ _3UC6i _2T0d8").find_all("td")[1].contents[0]
-        self.price["fairPrice"] = self.soup.find("table", class_="HgJzJ _3UC6i _2T0d8").find_all("td")[2].contents[0]
+            trimRes = self.soup.find("div", class_="_2spOl")
+            self.price["version"] = trimRes.contents[0]
+            self.price["msrp"] = self.soup.find("table", class_="HgJzJ _3UC6i _2T0d8").find_all("td")[1].contents[0]
+            self.price["fairPrice"] = self.soup.find("table", class_="HgJzJ _3UC6i _2T0d8").find_all("td")[2].contents[0]
 
-        detScoreRes = self.soup.find_all("span", class_="_3N0CY")
-        self.perf = detScoreRes[0].contents[0]
-        self.eff = detScoreRes[1].contents[0]
-        self.tech = detScoreRes[2].contents[0]
-        self.value = detScoreRes[3].contents[0]
-        MotorTrend.cars.append(self)
-    
+            detScoreRes = self.soup.find_all("span", class_="_3N0CY")
+            self.perf = detScoreRes[0].contents[0]
+            self.eff = detScoreRes[1].contents[0]
+            self.tech = detScoreRes[2].contents[0]
+            self.value = detScoreRes[3].contents[0]
+            MotorTrend.cars.append(self)
+        except AttributeError:
+            print("Error reading MotorTrend. Please enter a different make, model, or year.")
+
     def genCSV():
         with open('data/motortrend.csv', 'w', newline="", encoding="UTF8") as file:
             writer = csv.writer(file)

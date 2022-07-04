@@ -19,23 +19,26 @@ class CarDriver:
             url += f"-{year}"
         page = requests.get(url)
         self.soup = BeautifulSoup(page.content, "html.parser")
-        self.overallScore = 0
-        self.pros = ""
-        self.cons = ""
-        self.overallEval = ""
-        self.rank = 0
+        self.overallScore = -1
+        self.pros = "N/A"
+        self.cons = "N/A"
+        self.overallEval = "N/A"
+        self.rank = -1
 
     def readPage(self):
-        scoreResult = self.soup.find("span", class_="css-7a3l6c e91pesh2")
-        self.overallScore = float(scoreResult.contents[0])
-        detComments = self.soup.find("ul", class_="css-17qs78k e18q3jx02").find_all("li")
-        self.pros = detComments[0].contents[2]
-        self.cons = detComments[1].contents[1]
-        self.overallEval = detComments[2].contents[1]
-        rankEl = self.soup.find("div", class_="css-czi23h")
-        self.rank = int(rankEl.contents[0])
-        CarDriver.cars.append(self)
-    
+        try:
+            scoreResult = self.soup.find("span", class_="css-7a3l6c e91pesh2")
+            self.overallScore = float(scoreResult.contents[0])
+            detComments = self.soup.find("ul", class_="css-17qs78k e18q3jx02").find_all("li")
+            self.pros = detComments[0].contents[2]
+            self.cons = detComments[1].contents[1]
+            self.overallEval = detComments[2].contents[1]
+            rankEl = self.soup.find("div", class_="css-czi23h")
+            self.rank = int(rankEl.contents[0])
+            CarDriver.cars.append(self)
+        except AttributeError:
+            print("Error reading CarAndDriver. Please enter a different make, model, or year.")
+
     def genCSV():
         with open('data/carDriver.csv', 'w', newline="", encoding="UTF8") as file:
             writer = csv.writer(file)
